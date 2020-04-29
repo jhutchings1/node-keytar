@@ -33,7 +33,8 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    - run: |  
+    - run: | 
+        npm install 
         npm run prebuild-node
         npm run prebuild-electron
         docker build -t node-keytar/i386 docker/i386 && docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"
