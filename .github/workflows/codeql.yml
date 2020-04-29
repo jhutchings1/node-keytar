@@ -26,11 +26,6 @@ jobs:
       # with:
       #   languages: go, javascript, csharp, python, cpp, java
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below).
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
-
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
 
@@ -38,9 +33,10 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    #- run: |
-    #   make bootstrap
-    #   make release
-
+    - run: |  
+        xvfb-run ./script/cibuild;
+        npm run prebuild-node
+        npm run prebuild-electron
+        docker build -t node-keytar/i386 docker/i386 && docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
